@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.ComponentModel.DataAnnotations;
 
+
 namespace lucky_number_database.Models
 {
     public class LuckyNumber
@@ -12,6 +13,8 @@ namespace lucky_number_database.Models
         private int[] _spinner = new int[3];
         private decimal _balance;
 
+        [Key]
+        public int Id { get; set; }
         [Required]
         [Display(Name = "Lucky Number")]
         [Range(1,9,ErrorMessage ="The Lucky Number must be a number from 1 to 9")]
