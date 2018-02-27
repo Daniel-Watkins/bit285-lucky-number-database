@@ -20,33 +20,40 @@ namespace bit285_lucky_number_database.Controllers
         {
             if (ModelState.IsValid)
             {
-                Session["_ID"] = userLuck.Id;
                 dbc.LuckyNumbers.Add(userLuck);
                 dbc.SaveChanges();
-                return View("Spin", userLuck);
+                Session["_ID"] = userLuck.Id;
+                return RedirectToAction("Spin", userLuck);
             }
             return View();
         }
         // GET: LuckyNumber
+        [HttpGet]
         public ActionResult Spin()
         {
-            /*LuckyNumber myLuck = new LuckyNumber { Number = 7, Balance = 4 };
-            dbc.LuckyNumbers.Add(myLuck);
-            dbc.SaveChanges();*/
-            //LuckyNumber databaseLuck = dbc.LuckyNumbers.Where(m => m.Id == Convert.ToInt32(Session["_ID"])).First();
-            return View();
+            LuckyNumber myLuck = new LuckyNumber { Number = 7, Balance = 4 };
+            if (Session["_ID"] != null)
+            {
+                myLuck = dbc.LuckyNumbers.Find((int)Session["_ID"]);
+                return View(myLuck);
+            }
+            else
+            {
+                return View(myLuck);
+            }
         }
 
         [HttpPost]
         public ActionResult Spin(LuckyNumber lucky)
         {
-            LuckyNumber databaseLuck = dbc.LuckyNumbers.Where(m=>m.Id == Convert.ToInt32(Session["_ID"])).First();
-            //Change the Balance in the database
-            if(databaseLuck.Balance>0)
+            LuckyNumber databaseLuck = dbc.LuckyNumbers.Find((int)Session["_ID"]);
+            LuckyNumber tempLuck = new LuckyNumber();
+            if (databaseLuck.Balance > 0)
             {
                 databaseLuck.Balance -= 1;
             }
-            databaseLuck.Number = lucky.Number;
+            databaseLuck.Balance = databaseLuck.Balance + tempLuck.Balance;
+            //Change the Balance in the database
             dbc.SaveChanges();
             return View(databaseLuck);
         }

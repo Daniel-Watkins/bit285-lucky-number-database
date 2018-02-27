@@ -20,8 +20,16 @@ namespace lucky_number_database.Models
         [Range(1,9,ErrorMessage ="The Lucky Number must be a number from 1 to 9")]
         public int Number { get; set; }
 
+        public string Message
+        {
+            get
+            {
+               return _balance <= 0 ? "GAME OVER" : "";
+            }
+        }
         [Required]
-        public decimal Balance {
+        public decimal Balance
+        {
             set
             {
                 _balance = value;
@@ -35,15 +43,6 @@ namespace lucky_number_database.Models
                 return _balance;
             }
         }
-
-        public string Message
-        {
-            get
-            {
-               return _balance <= 0 ? "GAME OVER" : "";
-            }
-        }
-
         public int[] Spinner
         {
             get
